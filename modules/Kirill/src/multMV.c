@@ -7,6 +7,10 @@
 
 #define IND_mult(x,y,z) ((x) + (y)*nx + (z)*ny*nx)
 
+
+
+
+
 void initSpMat(SpMatrix *mat, int nz, int nRows) {
   mat->nz = nz;
   mat->nRows = nRows;
@@ -200,22 +204,39 @@ void multMV_altera(TYPE* result, SpMatrix mat, TYPE* vec, int sizeTime ) {
   size_t max_wg_size, num_wg_sizes = 0;
   err = clGetKernelWorkGroupInfo(kernel, device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(size_t), (void *) &max_wg_size, NULL);
   checkError(err, "ERROR: clGetKernelWorkGroupInfo failed");
+  fprintf(stdout, "CL_KERNEL_WORK_GROUP_SIZE = %lu\n", max_wg_size);
 
-  size_t *localWorkSize = default_wg_sizes(&num_wg_sizes,max_wg_size, globalWorkSize);
-//  size_t localWorkSize[] = {1};
-  fprintf(stdout, "local size = %lu global size = %lu\n", localWorkSize[0], globalWorkSize[0]);
+  cl_ulong a;
+  err = clGetKernelWorkGroupInfo(kernel, device,  CL_KERNEL_LOCAL_MEM_SIZE, sizeof(cl_ulong), (void *) &a, NULL);
+  checkError(err, "ERROR: clGetKernelWorkGroupInfo failed");
+  fprintf(stdout, "CL_KERNEL_LOCAL_MEM_SIZE = %lu\n", a);
 
+  size_t attributed[3];
+  err = clGetKernelWorkGroupInfo(kernel, device, CL_KERNEL_COMPILE_WORK_GROUP_SIZE, sizeof(attributed), (void *)attributed, NULL);
+  checkError(err, "ERROR: clGetKernelWorkGroupInfo failed");
+  fprintf(stdout, "CL_KERNEL_COMPILE_WORK_GROUP_SIZE  = (%lu, %lu, %lu)\n", attributed[0], attributed[1], attributed[2]);
+
+  size_t *localWorkSize2 = default_wg_sizes(&num_wg_sizes,max_wg_size, globalWorkSize);
+//  size_t localWorkSize = 1;
+//  fprintf(stdout, "local size = %lu global size = %lu\n", localWorkSize[0], globalWorkSize[0]);
+
+//  double time1 = MPI_Wtime();
   cl_mem tmp;
   for (int i = 0; i < sizeTime; i++) {
-    err = clEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
+    err = clEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, globalWorkSize, localWorkSize2, 0, NULL, NULL);
+//    checkError(err,  "clEnqueueNDRangeKernel");
+
     tmp = memVec;
     memVec = memResult;
     memResult = tmp;
     clSetKernelArg(kernel, 4, sizeof(cl_mem), &memVec);
     clSetKernelArg(kernel, 5, sizeof(cl_mem), &memResult);
   }
+//  double time2 = MPI_Wtime();
+
   clFinish(commandQueue);
 
+//  printf("TIME OPENCL KERNEL %lf\n", time2 - time1);
   err = clEnqueueReadBuffer(commandQueue, memVec, CL_TRUE, 0, sizeof(TYPE)*mat.nRows, result, 0, NULL, NULL);
   checkError(err,  "clEnqueueReadBuffer: out");
   clFinish(commandQueue);

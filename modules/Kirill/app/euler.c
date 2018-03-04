@@ -133,6 +133,7 @@ int main(int argc, char **argv) {
   MPI_Cart_shift(gridComm, 1, -1, &rank_left, &rank_right);
   MPI_Cart_shift(gridComm, 0, 1, &rank_down, &rank_top);
 
+
 //   printf("rank - %d; left %d; right %d; top %d; down %d\n", rankP, rank_left, rank_right, rank_top, rank_down);
 
   // Создание типа плоскости XY и XZ

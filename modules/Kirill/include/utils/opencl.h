@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+void init_mem();
+
 cl_context createContext(void);
 cl_command_queue createCommandQueue(cl_context context, cl_device_id *device);
 cl_program createProgram(cl_context context, cl_device_id device);

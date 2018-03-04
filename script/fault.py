@@ -46,39 +46,39 @@ def main():
         #                    Рисование графиков                            #
         ####################################################################
 
-        assert len(x) == len(yAbs)
-
-        plt.figure(num = 'FAULT', facecolor = (1, 1, .54))
-
-        plt.subplot(221)
-        plt.plot(x, yAbs, label ='absolut', color = 'green')
-
-        plt.legend(loc = 2)
-        plt.xlabel('x', fontsize = 14)
-        plt.grid(True)
-        ax = plt.gca()
-        ax.yaxis.set_major_formatter(FuncFormatter(lambda x,y: '{:.0e}'.format(x)))
-        # plt.yscale('log')
-
-        plt.subplot(222)
-        plt.plot(x, yRelat, label = 'relative', color = 'red')
-        plt.legend(loc = 2)
-        plt.xlabel('x', fontsize=14)
-        plt.grid(True)
-
-        plt.subplot(223)
-        plt.plot(x, res1, label = sys.argv[1], color = 'blue')
-        plt.legend(loc = 2)
-        plt.xlabel('x', fontsize = 14)
-        plt.grid(True)
-
-        plt.subplot(224)
-        plt.plot(x, res2, label = sys.argv[2], color = 'brown')
-        plt.legend(loc = 2)
-        plt.xlabel('x', fontsize = 14)
-        plt.grid(True)
-
-        plt.show()
+        # assert len(x) == len(yAbs)
+        #
+        # plt.figure(num = 'FAULT', facecolor = (1, 1, .54))
+        #
+        # plt.subplot(221)
+        # plt.plot(x, yAbs, label ='absolut', color = 'green')
+        #
+        # plt.legend(loc = 2)
+        # plt.xlabel('x', fontsize = 14)
+        # plt.grid(True)
+        # ax = plt.gca()
+        # ax.yaxis.set_major_formatter(FuncFormatter(lambda x,y: '{:.0e}'.format(x)))
+        # # plt.yscale('log')
+        #
+        # plt.subplot(222)
+        # plt.plot(x, yRelat, label = 'relative', color = 'red')
+        # plt.legend(loc = 2)
+        # plt.xlabel('x', fontsize=14)
+        # plt.grid(True)
+        #
+        # plt.subplot(223)
+        # plt.plot(x, res1, label = sys.argv[1], color = 'blue')
+        # plt.legend(loc = 2)
+        # plt.xlabel('x', fontsize = 14)
+        # plt.grid(True)
+        #
+        # plt.subplot(224)
+        # plt.plot(x, res2, label = sys.argv[2], color = 'brown')
+        # plt.legend(loc = 2)
+        # plt.xlabel('x', fontsize = 14)
+        # plt.grid(True)
+        #
+        # plt.show()
     except AssertionError:
         print ('ERROR! Не совпадают размерности! ' + str(len(res1)) + "!=" + str(len(res2)))
 

@@ -43,7 +43,7 @@ cl_context createContext(void) {
 #if FPGA_RUN
   cl_device_type device_type = CL_DEVICE_TYPE_ACCELERATOR;
 #else
-  cl_device_type device_type = CL_DEVICE_TYPE_GPU;
+  cl_device_type device_type = CL_DEVICE_TYPE_CPU;
 #endif
   context = clCreateContextFromType(contextProperties, device_type, NULL, NULL, &errNum);
   checkError(errNum, "Could not create GPU context, trying CPU..");
@@ -93,7 +93,7 @@ cl_program createProgram(cl_context context, cl_device_id device) {
     exit(-1);
   }
   fseek(kernel_fp, 0, SEEK_END);
-  size_t kernelLength = (size_t) ftell(kernel_fp);
+  size_t kernelLength = (size_t)ftell(kernel_fp);
   char* kernelSource = (char *)malloc(sizeof(char)*kernelLength);
   if(kernelSource == NULL){
     fprintf(stderr,"common_ocl.ocdBuildProgramFromFile() - Heap Overflow! Cannot allocate space for kernelSource.");
