@@ -8,16 +8,16 @@ set(APP         "app_${MODULE}")
 set(LIBRARY     "lib_${MODULE}")
 
 set(TYPE        DOUBLE)
-set(THREAD_RUN  1)
+set(THREAD_RUN  0)
 set(MKL_RUN     0)
 set(AVX2_RUN    0)
 set(FPGA_RUN 	0)
-set(CPUGPU_RUN  0)
+set(CPUGPU_RUN  1)
 
 #   Setting paths
 set(INPUT_EULER_SETTING_PATH    "${CMAKE_SOURCE_DIR}/initial/setting3.ini")
 set(INPUT_EULER_FUNCTION_PATH   "${CMAKE_SOURCE_DIR}/initial/function3.txt")
-set(RESULT_EULER_PATH           "${CMAKE_SOURCE_DIR}/result/Kirill/euler3D_double_fpga_64.txt")
+set(RESULT_EULER_PATH           "${CMAKE_SOURCE_DIR}/result/Kirill/euler3D_double_fpga.txt")
 
 if(${FPGA_RUN})
 	set(KERNEL_CL_PATH    		"${CMAKE_BINARY_DIR}/modules/Kirill/src/kernel.aocx")
